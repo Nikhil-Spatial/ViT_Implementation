@@ -9,7 +9,7 @@ H = 32
 P = 4
 
 # total number of image patch embeddings + classification token
-N = (W / P) * (H / P) + 1
+N = int((W / P) * (H / P) + 1)
 
 # number of images per batch for training/inference
 B = 256
