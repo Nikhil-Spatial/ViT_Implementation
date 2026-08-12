@@ -13,7 +13,7 @@ class VisionTransformer(nn.Module):
         self.positional_embeddings = nn.Parameter(torch.randn(1, N, D))
 
     def forward(self, x):
-        # [B, D, P, P] -> [B, D, P^2]
+        # [B, 3, H, W] -> [B, D, P, P], [B, D, P^2]
         x = self.conv(x).reshape((B, D, P*P))
 
         # [B, D, P^2] -> [B, P^2, D]
@@ -25,7 +25,14 @@ class VisionTransformer(nn.Module):
         # add positional embeddings to the patch embeddings
         x = x + self.positional_embeddings
 
+        return x
 
+model = VisionTransformer()
+
+inputs = torch.randn(B, 3, P, P)
+outputs = model(inputs)
+
+print(outputs.shape)
 
 
 
