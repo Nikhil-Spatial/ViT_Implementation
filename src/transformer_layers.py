@@ -1,5 +1,5 @@
+from configs import HEADS, D, N, dropout_P, LAYERS
 import torch.nn.functional as F
-from configs import HEADS, D, N, dropout_P
 import torch.nn as nn
 import torch
 import math
@@ -72,7 +72,7 @@ class MLP(nn.Module):
 
         return self.dropout_2(self.linear_transform_2(x))
 
-class TransformerBlock(nn.Module):
+class TransformerLayer(nn.Module):
     def __init__(self):
         super().__init__()
 
@@ -103,3 +103,13 @@ class TransformerBlock(nn.Module):
 class TransformerEncoder(nn.Module):
     def __init__(self):
         super().__init__()
+
+        # list of transformer layers
+        self.transformer_layers = [TransformerLayer() for _ in range(LAYERS)]
+
+    def forward(self, x):
+        # feed patch embeddings to the transformer layers
+        for transformer_layer in self.transformer_layers:
+            x = transformer_layer(x)
+
+        return x

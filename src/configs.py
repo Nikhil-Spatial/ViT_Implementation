@@ -19,3 +19,6 @@ dropout_P = 0.0
 
 # number of heads
 HEADS = 4
+
+# number of transformer layers in the transformer encoder
+LAYERS = 4
