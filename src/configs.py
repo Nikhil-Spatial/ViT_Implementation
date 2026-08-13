@@ -25,3 +25,9 @@ LAYERS = 4
 
 # number of classes in the classification dataset
 CLASSES = 10
+
+# seed for generators
+SEED = 7
+
+# CPU worker processes count
+WORKERS = 4
