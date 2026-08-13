@@ -17,7 +17,7 @@ class VisionTransformer(nn.Module):
         x = self.conv(x).reshape((B, D, N))
 
         # [B, D, N] -> [B, N, D]
-        x = torch.transpose(x, 1, 2)
+        x = torch.transpose(x, -2, -1)
 
         # prepend a classification token to every image's patch sequence
         # [B, N, D] -> [B, N+1, D]
