@@ -5,7 +5,7 @@ D = 512
 W = 32
 H = 32
 
-# image patch length/width
+# image patch width/height
 P = 4
 
 # total number of image patch embeddings
@@ -16,3 +16,6 @@ B = 256
 
 # dropout probability
 dropout_P = 0.0
+
+# number of heads
+HEADS = 4
