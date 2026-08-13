@@ -66,9 +66,7 @@ class MLP(nn.Module):
     def forward(self, x):
         # affine transformation -> dropout -> GeLU activation
         # -> affine transformation -> dropout
-        x = self.dropout_1(self.linear_transform_1(x))
-
-        x = F.gelu(x)
+        x = F.gelu(self.dropout_1(self.linear_transform_1(x)))
 
         return self.dropout_2(self.linear_transform_2(x))
 

@@ -22,3 +22,6 @@ HEADS = 4
 
 # number of transformer layers in the transformer encoder
 LAYERS = 4
+
+# number of classes in the classification dataset
+CLASSES = 10
