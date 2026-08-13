@@ -2,8 +2,9 @@ import torch.nn.functional as F
 from configs import HEADS, D, N
 import torch.nn as nn
 import torch
+import math
 
-class MultiHeadSelfAttention(nn.Module):
+class SelfAttentionHead(nn.Module):
     def __init__(self):
         super().__init__()
 
@@ -21,8 +22,25 @@ class MultiHeadSelfAttention(nn.Module):
         K = self.K_linear_transform(x)
         V = self.V_linear_transform(x)
 
-        torch.matmul(Q, K)
+        # compute attention scores:
+        # softmax(matmul(Q, transpose(K)) / sqrt(D_qkv))
+        attention_scores = F.softmax(
+            (Q @ K.transpose(-2, -1)) / math.sqrt(self.D_qkv)
+        )
 
+        # compute head output
+        return attention_scores @ V
+
+    
+
+class MultiHeadSelfAttention(nn.Module):
+    def __init__(self):
+        super().__init__()
+
+        self.self_attention_head_1 = SelfAttentionHead()
+        self.self_attention_head_2 = SelfAttentionHead()
+        self.self_attention_head_3 = SelfAttentionHead()
+        self.self_attention_head_4 = SelfAttentionHead()
 
 
 class TransformerBlock(nn.Module):
