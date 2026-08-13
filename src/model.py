@@ -1,5 +1,5 @@
-from src.configs import D, W, H, P, N, dropout_P, CLASSES, device
 from src.transformer_layers import TransformerEncoder
+from src.configs import D, P, N, dropout_P, CLASSES
 import torch.nn.functional as F
 import torch.nn as nn
 import torch

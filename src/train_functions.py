@@ -1,3 +1,5 @@
+import torch
+
 def train(model, loss_fn, optimizer, train_dl, device):
     model.train()
 

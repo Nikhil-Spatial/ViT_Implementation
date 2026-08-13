@@ -1,14 +1,13 @@
 from torch.optim.lr_scheduler import CosineAnnealingLR
 from torch.utils.data import random_split, DataLoader
-from transforms import train_transforms, test_transforms
-from torchvision.datasets import CIFAR10
 from configs import SEED, BATCH_SIZE, WORKERS
-from train_functions import train
+from torchvision.datasets import CIFAR10
+from transforms import train_transforms
 from inference_functions import evaluate
-from pathlib import Path
 from model import VisionTransformer
+from train_functions import train
+from pathlib import Path
 import argparse
-import torch.nn as nn
 import torch
 import time
 
@@ -49,7 +48,7 @@ def main():
     num_epochs = 100
 
     model = VisionTransformer().to(device, non_blocking=True)
-    loss_fn = nn.CrossEntropyLoss.to(device, non_blocking=True)
+    loss_fn = torch.nn.CrossEntropyLoss.to(device, non_blocking=True)
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-2)
     scheduler = CosineAnnealingLR(optimizer, num_epochs, 1e-4)
 
