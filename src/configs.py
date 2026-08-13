@@ -17,7 +17,7 @@ P = 4
 N = int((W / P) * (H / P))
 
 # number of images per batch for training/inference
-BATCH_SIZE = 64
+BATCH_SIZE = 128
 
 # dropout probability
 dropout_P = 0.0
