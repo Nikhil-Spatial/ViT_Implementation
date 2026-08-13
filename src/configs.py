@@ -26,7 +26,7 @@ dropout_P = 0.0
 HEADS = 4
 
 # number of transformer layers in the transformer encoder
-LAYERS = 8
+LAYERS = 4
 
 # number of classes in the classification dataset
 CLASSES = 10

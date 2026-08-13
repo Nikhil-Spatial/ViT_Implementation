@@ -1,4 +1,4 @@
-from src.configs import HEADS, D, dropout_P, LAYERS
+from configs import HEADS, D, dropout_P, LAYERS
 import torch.nn.functional as F
 import torch.nn as nn
 import torch
