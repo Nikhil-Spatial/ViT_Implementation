@@ -4,7 +4,7 @@ import torch
 CIFAR_MEAN = (0.49145, 0.48219, 0.44658)
 CIFAR_STD = (0.24687, 0.24332, 0.26137)
 
-crop_transform = nn.ModuleList([
+crop_transform = torch.nn.ModuleList([
     v2.RandomCrop(
         size=32,
         padding=4
