@@ -1,3 +1,4 @@
+from transformer_layers import TransformerEncoder
 from configs import D, W, H, P, B, N, dropout_P
 import torch.nn as nn
 import torch
@@ -13,6 +14,9 @@ class VisionTransformer(nn.Module):
         self.positional_embeddings = nn.Parameter(torch.randn(1, N+1, D))
         self.dropout = nn.Dropout(dropout_P)
 
+        # 3) transformer encoder
+        self.transformer_encoder = TransformerEncoder()
+
     def forward(self, x):
         # [B, 3, H, W] -> [B, D, H/P, W/P], [B, D, N]
         x = self.conv(x).reshape((B, D, N))
@@ -26,5 +30,8 @@ class VisionTransformer(nn.Module):
 
         # add positional embeddings to the patch embeddings
         x = self.dropout(x + self.positional_embeddings)
+
+        # feed patch embeddings to the transformer encoder
+        x = self.transformer_encoder(x)
 
         return x
