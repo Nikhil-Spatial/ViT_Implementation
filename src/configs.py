@@ -17,7 +17,7 @@ P = 4
 N = int((W / P) * (H / P))
 
 # number of images per batch for training/inference
-BATCH_SIZE = 32
+BATCH_SIZE = 64
 
 # dropout probability
 dropout_P = 0.0
@@ -26,7 +26,7 @@ dropout_P = 0.0
 HEADS = 4
 
 # number of transformer layers in the transformer encoder
-LAYERS = 4
+LAYERS = 8
 
 # number of classes in the classification dataset
 CLASSES = 10

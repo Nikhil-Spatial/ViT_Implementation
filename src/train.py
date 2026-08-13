@@ -77,7 +77,7 @@ def main():
         scheduler.step()
 
         # b. evaluate performance on validation set
-        val_accuracy, val_loss = evalute(model, val_dl, device, loss_fn)
+        val_accuracy, val_loss = evaluate(model, val_dl, device, loss_fn)
 
         # c. save checkpoints
         checkpoint = {
@@ -91,7 +91,7 @@ def main():
 
         # d. display statistics
         print(f"(Epoch {epoch+1}) Training: Loss - {train_loss:.4f} "
-              f"| Validation: Loss - {val_loss:.4f} Accuracy - {val_accuracy}")
+              f"| Validation: Loss - {val_loss:.4f} Accuracy - {val_accuracy:.4f}")
 
         # e. display epoch duration
         end_time = time.perf_counter()

@@ -59,4 +59,4 @@ class VisionTransformer(nn.Module):
         # feed layer normalized classification tokens to MLP head
         x = F.tanh(self.hidden_layer(x))
 
-        return F.softmax(self.output_layer(x), dim=-1).squeeze(1)
+        return self.output_layer(x).squeeze(1)
