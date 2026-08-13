@@ -1,4 +1,4 @@
-from configs import D, W, H, P, B, N
+from configs import D, W, H, P, B, N, dropout_P
 import torch.nn as nn
 import torch
 
@@ -9,8 +9,9 @@ class VisionTransformer(nn.Module):
         # 1) create patches and apply affine linear transformations to them
         self.conv = nn.Conv2d(3, D, kernel_size=P, stride=P)
 
-        # 2) positional embeddings
+        # 2) positional embeddings + dropout
         self.positional_embeddings = nn.Parameter(torch.randn(1, N+1, D))
+        self.dropout = nn.Dropout(dropout_P)
 
     def forward(self, x):
         # [B, 3, H, W] -> [B, D, H/P, W/P], [B, D, N]
@@ -24,6 +25,6 @@ class VisionTransformer(nn.Module):
         x = torch.cat((x, nn.Parameter(torch.randn(B, 1, D))), dim=1)
 
         # add positional embeddings to the patch embeddings
-        x = x + self.positional_embeddings
+        x = self.dropout(x + self.positional_embeddings)
 
         return x

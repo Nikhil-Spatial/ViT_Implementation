@@ -1,5 +1,5 @@
 import torch.nn.functional as F
-from configs import HEADS, D, N
+from configs import HEADS, D, N, dropout_P
 import torch.nn as nn
 import torch
 import math
@@ -53,6 +53,25 @@ class MultiHeadSelfAttention(nn.Module):
         # apply linear transformation
         return self.output_linear_transform(output)
 
+class MLP(nn.Module):
+    def __init__(self):
+        super().__init__()
+
+        self.linear_transform_1 = nn.Linear(D, D)
+        self.dropout_1 = nn.Dropout(dropout_P)
+
+        self.linear_transform_2 = nn.Linear(D, D)
+        self.dropout_2 = nn.Dropout(dropout_P)
+
+    def forward(self, x):
+        # affine transformation -> dropout -> GeLU activation
+        # -> affine transformation -> dropout
+        x = self.dropout_1(self.linear_transform_1(x))
+
+        x = F.gelu(x)
+
+        return self.dropout_2(self.linear_transform_2(x))
+
 class TransformerBlock(nn.Module):
     def __init__(self):
         super().__init__()
@@ -61,9 +80,25 @@ class TransformerBlock(nn.Module):
         self.layer_norm_1 = nn.LayerNorm(D)
         self.layer_norm_2 = nn.LayerNorm(D)
 
+        # multi-head self-attention layer
+        self.multi_head_self_attention = MultiHeadSelfAttention()
 
+        # multi-layered perceptron (MLP)
+        self.mlp = MLP()
 
-        #
+    def forward(self, x):
+        # keep original input for residual connection
+        pre_norm_x = x
+
+        # layer normalize input -> multi-head self-attention residual connection
+        x = self.layer_norm_1(x)
+        x = self.multi_head_self_attention(x) + pre_norm_x
+
+        # layer normalize input -> mlp residual connection
+        pre_norm_x = x
+
+        x = self.layer_norm_2(x)
+        return self.mlp(x) + pre_norm_x
 
 class TransformerEncoder(nn.Module):
     def __init__(self):
