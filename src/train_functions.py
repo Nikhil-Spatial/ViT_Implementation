@@ -1,7 +1,7 @@
 def train(model, loss_fn, optimizer, train_dl, device):
     model.train()
-    epoch_loss = 0.0
 
+    total_loss = torch.tensor(0.0, device=device)
     for X_batch, y_batch in train_dl:
         X_batch = X_batch.to(device, non_blocking=True)
         y_batch = y_batch.to(device, non_blocking=True)
@@ -21,6 +21,7 @@ def train(model, loss_fn, optimizer, train_dl, device):
         # 5. optimizer step
         optimizer.step()
 
-        epoch_loss += loss.item()
+        total_loss += loss
 
-    return epoch_loss / len(train_dl) # returns average loss over the epoch
+    # return average epoch loss
+    return (total_loss / len(train_dl)).item()

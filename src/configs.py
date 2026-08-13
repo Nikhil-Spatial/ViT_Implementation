@@ -1,3 +1,8 @@
+import torch
+
+# use GPU instead of CPU, if possible
+device = "cuda" if torch.cuda.is_available() else "cpu"
+
 # patch embedding dimensions
 D = 512
 
@@ -12,7 +17,7 @@ P = 4
 N = int((W / P) * (H / P))
 
 # number of images per batch for training/inference
-B = 256
+BATCH_SIZE = 32
 
 # dropout probability
 dropout_P = 0.0

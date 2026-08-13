@@ -1,5 +1,5 @@
-from transformer_layers import TransformerEncoder
-from configs import D, W, H, P, B, N, dropout_P, CLASSES
+from src.configs import D, W, H, P, N, dropout_P, CLASSES, device
+from src.transformer_layers import TransformerEncoder
 import torch.nn.functional as F
 import torch.nn as nn
 import torch
@@ -10,6 +10,9 @@ class VisionTransformer(nn.Module):
 
         # create patches and apply affine linear transformations to them
         self.conv_layer = nn.Conv2d(3, D, kernel_size=P, stride=P)
+
+        # classification token
+        self.classification_token = nn.Parameter(torch.randn(1, 1, 512))
 
         # positional embeddings + dropout
         self.positional_embeddings = nn.Parameter(torch.randn(1, N+1, D))
@@ -27,6 +30,9 @@ class VisionTransformer(nn.Module):
         self.output_layer = nn.Linear(D, CLASSES)
 
     def forward(self, x):
+        # batch size (the last batch received from the dataloader may differ)
+        B = x.shape[0]
+
         # [B, 3, H, W] -> [B, D, H/P, W/P], [B, D, N]
         x = self.conv_layer(x).reshape((B, D, N))
 
@@ -35,7 +41,8 @@ class VisionTransformer(nn.Module):
 
         # prepend a classification token to every image's patch sequence
         # [B, N, D] -> [B, N+1, D]
-        x = torch.cat((x, nn.Parameter(torch.randn(B, 1, D))), dim=1)
+        classification_token = self.classification_token.expand(B, -1, -1)
+        x = torch.cat((x, classification_token), dim=1)
 
         # add positional embeddings to the patch embeddings
         x = self.dropout(x + self.positional_embeddings)
@@ -52,4 +59,4 @@ class VisionTransformer(nn.Module):
         # feed layer normalized classification tokens to MLP head
         x = F.tanh(self.hidden_layer(x))
 
-        return F.softmax(self.output_layer(x), dim=-1)
+        return F.softmax(self.output_layer(x), dim=-1).squeeze(1)

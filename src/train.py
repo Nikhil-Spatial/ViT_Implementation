@@ -2,8 +2,9 @@ from torch.optim.lr_scheduler import CosineAnnealingLR
 from torch.utils.data import random_split, DataLoader
 from transforms import train_transforms, test_transforms
 from torchvision.datasets import CIFAR10
-from configs import SEED, B, WORKERS
+from configs import SEED, BATCH_SIZE, WORKERS
 from train_functions import train
+from inference_functions import evaluate
 from pathlib import Path
 from model import VisionTransformer
 import argparse
@@ -37,13 +38,12 @@ def main():
     )
 
     # create train and validation dataloaders
-    train_dl = DataLoader(train_dataset, batch_size=B, shuffle=True,
-                          num_workers=WORKERS, pin_memory=True, persistent_workers=True)
-    val_dl = DataLoader(val_dataset, batch_size=B, num_workers=WORKERS,
-                        pin_memory=True, persistent_workers=True)
-
-    # use GPU instead of CPU, if possible
-    device = "cuda" if torch.cuda.is_available() else "cpu"
+    train_dl = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True,
+        num_workers=WORKERS, pin_memory=True, persistent_workers=True
+    )
+    val_dl = DataLoader(val_dataset, batch_size=BATCH_SIZE, num_workers=WORKERS,
+        pin_memory=True, persistent_workers=True
+    )
 
     start_epoch = 0
     num_epochs = 100
@@ -74,10 +74,11 @@ def main():
         start_time = time.perf_counter()
 
         # a. train model
-        # train_loss = train(model, loss_fn, optimizer, train_dl, device)
+        train_loss = train(model, loss_fn, optimizer, train_dl, device)
         scheduler.step()
 
         # b. evaluate performance on validation set
+        val_accuracy, val_loss = evalute(model, val_dl, device, loss_fn)
 
         # c. save checkpoints
         checkpoint = {

@@ -1,4 +1,4 @@
-from configs import HEADS, D, N, dropout_P, LAYERS
+from src.configs import HEADS, D, N, dropout_P, LAYERS
 import torch.nn.functional as F
 import torch.nn as nn
 import torch
@@ -37,7 +37,9 @@ class MultiHeadSelfAttention(nn.Module):
         super().__init__()
 
         # list of self-attention heads
-        self.self_attention_heads = [SelfAttentionHead() for _ in range(HEADS)]
+        self.self_attention_heads = nn.ModuleList(
+            [SelfAttentionHead() for _ in range(HEADS)]
+        )
 
         # apply linear transformation to vertically concatenated head outputs
         self.output_linear_transform = nn.Linear(D, D, bias=False)
@@ -102,9 +104,10 @@ class TransformerEncoder(nn.Module):
     def __init__(self):
         super().__init__()
 
-        # list of transformer layers
-        self.transformer_layers = [TransformerLayer() for _ in range(LAYERS)]
-
+        # module list of transformer layers
+        self.transformer_layers = nn.ModuleList(
+            [TransformerLayer() for _ in range(LAYERS)]
+        )
     def forward(self, x):
         # feed patch embeddings to the transformer layers
         for transformer_layer in self.transformer_layers:
