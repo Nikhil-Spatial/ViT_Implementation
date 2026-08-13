@@ -1,15 +1,14 @@
-from src.configs import HEADS, D, N, dropout_P, LAYERS
+from src.configs import HEADS, D, dropout_P, LAYERS
 import torch.nn.functional as F
 import torch.nn as nn
 import torch
-import math
 
 class SelfAttentionHead(nn.Module):
     def __init__(self):
         super().__init__()
 
         # dimensions of each token in the query, key, and value tensors
-        self.D_qkv = D // HEADS
+        self.D_qkv = torch.tensor(D // HEADS)
 
         # Q, K, and V transformations are purely linear
         self.Q_linear_transform = nn.Linear(D, self.D_qkv, bias=False)
@@ -25,7 +24,7 @@ class SelfAttentionHead(nn.Module):
         # compute attention scores:
         # softmax(matmul(Q, transpose(K)) / sqrt(D_qkv))
         attention_scores = F.softmax(
-            (Q @ K.transpose(-2, -1)) / math.sqrt(self.D_qkv),
+            (Q @ K.transpose(-2, -1)) / self.D_qkv.sqrt(),
             dim=-1
         )
 
