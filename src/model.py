@@ -17,6 +17,9 @@ class VisionTransformer(nn.Module):
         # 3) transformer encoder
         self.transformer_encoder = TransformerEncoder()
 
+        # 4) layer normalize encoded classification tokens
+        self.layer_norm = nn.LayerNorm(D)
+
     def forward(self, x):
         # [B, 3, H, W] -> [B, D, H/P, W/P], [B, D, N]
         x = self.conv(x).reshape((B, D, N))
@@ -33,5 +36,8 @@ class VisionTransformer(nn.Module):
 
         # feed patch embeddings to the transformer encoder
         x = self.transformer_encoder(x)
+
+        # extract encoded classification tokens
+        x = torch.select(x, -2, 0).reshape(B, 1, D)
 
         return x
