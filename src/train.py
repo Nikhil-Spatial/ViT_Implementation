@@ -45,7 +45,7 @@ def main():
     )
 
     start_epoch = 0
-    num_epochs = 200
+    num_epochs = 100
 
     model = VisionTransformer().to(device, non_blocking=True)
     loss_fn = torch.nn.CrossEntropyLoss().to(device, non_blocking=True)
