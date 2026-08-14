@@ -20,7 +20,7 @@ N = int((W / P) * (H / P))
 BATCH_SIZE = 32
 
 # dropout probability
-dropout_P = 0.2
+dropout_P = 0.4
 
 # number of heads
 HEADS = 4
