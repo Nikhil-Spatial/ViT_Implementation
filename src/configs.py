@@ -4,29 +4,29 @@ import torch
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 # patch embedding dimensions
-D = 512
+D = 256
 
 # image width and height
 W = 32
 H = 32
 
 # image patch width/height
-P = 4
+P = 2
 
 # total number of image patch embeddings
 N = int((W / P) * (H / P))
 
 # number of images per batch for training/inference
-BATCH_SIZE = 128
+BATCH_SIZE = 64
 
 # dropout probability
-dropout_P = 0.0
+dropout_P = 0.2
 
 # number of heads
-HEADS = 4
+HEADS = 8
 
 # number of transformer layers in the transformer encoder
-LAYERS = 4
+LAYERS = 12
 
 # number of classes in the classification dataset
 CLASSES = 10

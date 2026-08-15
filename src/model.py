@@ -12,7 +12,7 @@ class VisionTransformer(nn.Module):
         self.conv_layer = nn.Conv2d(3, D, kernel_size=P, stride=P)
 
         # classification token
-        self.classification_token = nn.Parameter(torch.randn(1, 1, 512))
+        self.classification_token = nn.Parameter(torch.randn(1, 1, D))
 
         # positional embeddings + dropout
         self.positional_embeddings = nn.Parameter(torch.randn(1, N+1, D))

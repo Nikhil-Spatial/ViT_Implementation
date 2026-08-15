@@ -50,7 +50,7 @@ def main():
     model = VisionTransformer().to(device, non_blocking=True)
     loss_fn = torch.nn.CrossEntropyLoss().to(device, non_blocking=True)
     optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4)
-    scheduler = CosineAnnealingLR(optimizer, num_epochs, 1e-6)
+    scheduler = CosineAnnealingLR(optimizer, num_epochs, 1e-5)
 
     if args.resume is not None:
         checkpoint = torch.load(args.resume)
