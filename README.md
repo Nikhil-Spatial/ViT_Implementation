@@ -10,10 +10,12 @@ The model was trained on the CIFAR-10 dataset with these specific configurations
 - Image patch width/height: 4 pixels
 - Patch embeddings: 512 dimensions
 - Heads in Multi-head Self-attention layers: 4
-- Number of Transformer layers in the Transformer Encoder: 8
-- Dropout probability: 0.2
+- Number of Transformer layers in the Transformer Encoder: 4
+- Dropout probability: 0.0
 
-Its accuracy on the test dataset is --.--%. 
+The best model's accuracy on the test dataset is 77.87%. A lower performance was expected as the paper informed me that Convolutional and Residual Networks have 
+a lower inductive bias, and the way the researchers counteracted this inherent deficiency was by pre-training their vision transformer on extremely large datasets
+such as ImageNet and JFT. 
 
 ## **References**  
 Vision Transformer Paper - https://arxiv.org/abs/2010.11929
