@@ -11,22 +11,22 @@ W = 32
 H = 32
 
 # image patch width/height
-P = 2
+P = 4
 
 # total number of image patch embeddings
 N = int((W / P) * (H / P))
 
 # number of images per batch for training/inference
-BATCH_SIZE = 64
+BATCH_SIZE = 128
 
 # dropout probability
-dropout_P = 0.2
+dropout_P = 0.0
 
 # number of heads
-HEADS = 8
+HEADS = 4
 
 # number of transformer layers in the transformer encoder
-LAYERS = 12
+LAYERS = 4
 
 # number of classes in the classification dataset
 CLASSES = 10
