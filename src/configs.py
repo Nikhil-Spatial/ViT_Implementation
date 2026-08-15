@@ -4,7 +4,7 @@ import torch
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 # patch embedding dimensions
-D = 256
+D = 512
 
 # image width and height
 W = 32
